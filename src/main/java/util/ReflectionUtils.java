@@ -15,6 +15,21 @@ public class ReflectionUtils {
         return field;
     }
 
+    public static Object getFuckField(Object object, String fieldName) {
+        Field declaredField;
+        Class clazz = object.getClass();
+        while (clazz != Object.class) {
+            try {
+                declaredField = clazz.getDeclaredField(fieldName);
+                declaredField.setAccessible(true);
+                return declaredField.get(object);
+            } catch (Exception e) {
+            }
+            clazz = clazz.getSuperclass();
+        }
+        return null;
+    }
+
 
     public static Object createWithoutConstructor(Class cls) throws InstantiationException, IllegalAccessException {
         return cls.newInstance();

