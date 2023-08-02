@@ -6,14 +6,15 @@ import java.lang.reflect.Method;
 
 public class ArrayTest {
     public static void main(String[] args) throws Exception {
-//        Class test = Class.forName("Test");
-//        Object a =test.getConstructor(String.class).newInstance("a");
-//
-//        Method m = test.getDeclaredMethod("DiaoWo");
-//        m.setAccessible(true);
-//        m.invoke(a);
-//
-//        Method m1 = test.getDeclaredMethod("DiaoDiaoWo",String.class);
+        Class test = Class.forName("Test");
+        Object a =test.getConstructor(String.class).newInstance("a");
+
+        Method m = test.getDeclaredMethod("DiaoWo");
+        m.setAccessible(true);
+        m.invoke(a);
+
+
+        Method m1 = test.getDeclaredMethod("DiaoDiaoWo",String.class);
 //        m1.setAccessible(true);
 //        m1.invoke(a,"ws");
 //

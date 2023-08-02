@@ -2,6 +2,7 @@ package gadget.agent;
 
 import com.sun.tools.attach.VirtualMachine;
 import java.util.List;
+import com.sun.tools.*;
 import com.sun.tools.attach.VirtualMachineDescriptor;
 
 public class AgentC3P0JNDI {

