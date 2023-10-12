@@ -6,9 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="java_unser" />
         <module name="Gadget" />
-        <module name="Common_Collections" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Common_Collections" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

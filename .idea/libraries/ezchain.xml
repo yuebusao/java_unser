@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ezchain">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/ezchain.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

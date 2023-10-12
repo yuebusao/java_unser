@@ -14,6 +14,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class CC1Test {
     public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
