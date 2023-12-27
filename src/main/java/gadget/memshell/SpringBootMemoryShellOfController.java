@@ -37,7 +37,7 @@ public class SpringBootMemoryShellOfController extends AbstractTranslet {
         Method method = SpringBootMemoryShellOfController.class.getMethod("test",HttpServletRequest.class, HttpServletResponse.class);
 
         // 在内存中动态注册 controller
-        RequestMappingInfo info = RequestMappingInfo.paths("/test2").options(config).build();
+        RequestMappingInfo info = RequestMappingInfo.paths("/test1").options(config).build();
 
         if(i==0){
             SpringBootMemoryShellOfController springBootMemoryShellOfController = new SpringBootMemoryShellOfController("aaa");
