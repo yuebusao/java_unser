@@ -1,14 +1,23 @@
+import org.python.core.PyObject;
+import sun.misc.Unsafe;
+import util.ReflectionUtils;
+
+import java.lang.reflect.Field;
+
 public class Test {
     String a;
     static {
         System.out.println(1);
     }
 
-    public static void main(String[] args) {
-        String a ="java.util.Properties properties = new java.util.Properties();\n" +
-                "        javax.naming.CompoundName compoundName = new javax.naming.CompoundName(\"rmi://127.0.0.1:6666/calc\",properties);" +
-                "contextName=compoundName;";
-        System.out.println(a);
+    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+        Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+        unsafeField.setAccessible(true);
+        Unsafe unsafe = (Unsafe) unsafeField.get(null);
+        PyObject builtinFunctions = (PyObject) unsafe.allocateInstance(Class.forName("org.python.core.BuiltinFunctions"));
+
+        Field index = ReflectionUtils.getFuckField(builtinFunctions.getClass(),"index");
+        System.out.println(index);
     }
     public Test(String a){
         this.a = a;

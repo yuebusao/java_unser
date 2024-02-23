@@ -15,14 +15,14 @@ public class ReflectionUtils {
         return field;
     }
 
-    public static Object getFuckField(Object object, String fieldName) {
+    public static Field getFuckField(Class<?> clazz, String fieldName) {
         Field declaredField;
-        Class clazz = object.getClass();
+//        Class clazz = object.getClass();
         while (clazz != Object.class) {
             try {
                 declaredField = clazz.getDeclaredField(fieldName);
                 declaredField.setAccessible(true);
-                return declaredField.get(object);
+                return declaredField;
             } catch (Exception e) {
             }
             clazz = clazz.getSuperclass();
