@@ -13,6 +13,7 @@ import org.apache.commons.collections.keyvalue.AbstractMapEntryDecorator;
 import org.apache.commons.collections.keyvalue.TiedMapEntry;
 import org.apache.commons.collections.map.LazyMap;
 import org.apache.commons.collections.map.TransformedMap;
+import util.SerializerUtils;
 
 import javax.management.remote.JMXServiceURL;
 import javax.management.remote.rmi.RMIConnector;
@@ -58,6 +59,7 @@ public class CCtoRMI {
 
         oos.close();
 //        String base64String = Base64.getEncoder().encodeToString(baos.toByteArray());
+        SerializerUtils.unserialize(baos.toByteArray());
 //        System.out.println(base64String);
 //        System.out.println(base64String.length());
 

