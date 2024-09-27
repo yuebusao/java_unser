@@ -29,6 +29,34 @@ public class ReflectionUtils {
         }
         return null;
     }
+    public static Object createInstanceUnsafely(Class<?> clazz) throws Exception {
+        Class unsafeClass    = Class.forName("sun.misc.Unsafe");
+        Field theUnsafeField = unsafeClass.getDeclaredField("theUnsafe");
+        theUnsafeField.setAccessible(true);
+        return getMethodAndInvoke(theUnsafeField.get(null), "allocateInstance", new Class[]{Class.class}, new Object[]{clazz});
+    }
+    public static Object getMethodAndInvoke(Object obj, String methodName, Class[] parameterClass, Object[] parameters) {
+        try {
+            java.lang.reflect.Method method = getMethodByClass(obj.getClass(), methodName, parameterClass);
+            if (method != null)
+                return method.invoke(obj, parameters);
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+    public static java.lang.reflect.Method getMethodByClass(Class cs, String methodName, Class[] parameters) {
+        java.lang.reflect.Method method = null;
+        while (cs != null) {
+            try {
+                method = cs.getDeclaredMethod(methodName, parameters);
+                method.setAccessible(true);
+                cs = null;
+            } catch (Exception e) {
+                cs = cs.getSuperclass();
+            }
+        }
+        return method;
+    }
 
 
     public static Object createWithoutConstructor(Class cls) throws InstantiationException, IllegalAccessException {
